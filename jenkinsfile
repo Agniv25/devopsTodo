@@ -1,5 +1,7 @@
 pipeline {
     agent any
+    tools {
+    nodejs "NodeJS 14"
 
     environment {
         NODEJS_HOME = tool name: 'NodeJS 14', type: 'NodeJSInstallation'
@@ -35,8 +37,7 @@ pipeline {
             }
         }
     }
-    tools {
-    nodejs "NodeJS 14"
+    
 }
 
     post {
