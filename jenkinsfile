@@ -35,6 +35,9 @@ pipeline {
             }
         }
     }
+    tools {
+    nodejs "NodeJs"
+}
 
     post {
         always {
