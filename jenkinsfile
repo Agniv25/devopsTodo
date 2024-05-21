@@ -36,7 +36,7 @@ pipeline {
         }
     }
     tools {
-    nodejs "NodeJs"
+    nodejs "NodeJS 14"
 }
 
     post {
