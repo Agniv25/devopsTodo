@@ -1,0 +1,41 @@
+/* src/Todo.css */
+.todo-app {
+  text-align: center;
+}
+
+.todo-input {
+  margin: 20px 0;
+}
+
+.todo-input input {
+  padding: 10px;
+  width: 200px;
+  margin-right: 10px;
+}
+
+.todo-input button {
+  padding: 10px 15px;
+}
+
+.todo-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.todo-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin: 5px 0;
+}
+
+.todo-list li.completed span {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.todo-list li span {
+  cursor: pointer;
+}
