@@ -55,14 +55,13 @@ pipeline {
     agent any
 
     environment {
-        NODE_VERSION = '14.17.0' // specify the Node.js version you are using
+        NODE_VERSION = '20.13.1' // specify the Node.js version you are using
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from your source control
-                git 'https://github.com/Agniv25/todo-app.git'
+                git branch: 'main', url: 'https://github.com/Agniv25/todo-app.git'
             }
         }
         
