@@ -1,54 +1,46 @@
 pipeline {
     agent any
 
-    environment {
-        NODEJS_HOME = tool name: 'node', type: 'NodeJSInstallation'
-        PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Agniv25/todo-app.git'
+                // Checkout the source code from the repository
+                git 'https://your-repository-url.git'
             }
         }
+
         stage('Install Dependencies') {
             steps {
+                // Install dependencies
                 sh 'npm install'
             }
         }
+
         stage('Run Tests') {
             steps {
+                // Run tests
                 sh 'npm test'
             }
         }
+
         stage('Build') {
             steps {
+                // Build the application
                 sh 'npm run build'
             }
         }
-        stage('Deploy') {
-            steps {
-                // Example deployment step (could be to a server, S3, etc.)
-                // sh 'scp -r build/* user@your-server:/path/to/deploy'
-                echo 'Deploying application...'
-            }
-        }
     }
-    tools {
-    nodejs "node"
-}
 
     post {
         always {
-            archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
-            junit 'test-results.xml' // If you generate JUnit test reports
-        }
-        success {
-            echo 'Pipeline succeeded!'
-        }
-        failure {
-            echo 'Pipeline failed!'
+            // Archive build artifacts, e.g., the build directory
+            archiveArtifacts artifacts: 'build/**/*', allowEmptyArchive: true
+
+            // Publish test results
+            junit 'path-to-your-test-results/*.xml'
+
+            // Clean up the workspace
+            cleanWs()
         }
     }
 }
