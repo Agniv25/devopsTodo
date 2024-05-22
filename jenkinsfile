@@ -1,52 +1,124 @@
+// pipeline {
+//     agent any
+
+//     environment {
+//         NODEJS_HOME = tool name: 'node', type: 'NodeJSInstallation'
+//         PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+//     }
+
+//     stages {
+//         stage('Checkout') {
+//             steps {
+//                 git 'https://github.com/Agniv25/todo-app.git'
+//             }
+//         }
+//         stage('Install Dependencies') {
+//             steps {
+//                 sh 'npm install'
+//             }
+//         }
+//         stage('Run Tests') {
+//             steps {
+//                 sh 'npm test'
+//             }
+//         }
+//         stage('Build') {
+//             steps {
+//                 sh 'npm run build'
+//             }
+//         }
+//         stage('Deploy') {
+//             steps {
+//                 // Example deployment step (could be to a server, S3, etc.)
+//                 // sh 'scp -r build/* user@your-server:/path/to/deploy'
+//                 echo 'Deploying application...'
+//             }
+//         }
+//     }
+  
+
+//     post {
+//         always {
+//             archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
+//             junit 'test-results.xml' // If you generate JUnit test reports
+//         }
+//         success {
+//             echo 'Pipeline succeeded!'
+//         }
+//         failure {
+//             echo 'Pipeline failed!'
+//         }
+//     }
+// }
+
 pipeline {
     agent any
 
     environment {
-        NODEJS_HOME = tool name: 'node', type: 'NodeJSInstallation'
-        PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+        NODE_VERSION = '14.17.0' // specify the Node.js version you are using
     }
 
     stages {
         stage('Checkout') {
             steps {
+                // Checkout the code from your source control
                 git 'https://github.com/Agniv25/todo-app.git'
             }
         }
+        
+        stage('Install Node.js') {
+            steps {
+                // Install Node.js
+                script {
+                    def nodeHome = tool name: "node", type: 'NodeJSInstallation'
+                    env.PATH = "${nodeHome}/bin:${env.PATH}"
+                }
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
+                // Install npm dependencies
                 sh 'npm install'
             }
         }
+
         stage('Run Tests') {
             steps {
+                // Run tests (if you have any)
                 sh 'npm test'
             }
         }
+
         stage('Build') {
             steps {
+                // Build the application
                 sh 'npm run build'
             }
         }
+
         stage('Deploy') {
             steps {
-                // Example deployment step (could be to a server, S3, etc.)
-                // sh 'scp -r build/* user@your-server:/path/to/deploy'
+                // Deploy the application (this step will depend on your deployment strategy)
+                // For example, you could deploy to a static file server, S3, etc.
                 echo 'Deploying application...'
+                // Example: Deploy to a directory on the Jenkins server
+                // sh 'cp -r build/* /path/to/deployment/directory/'
             }
         }
     }
-  
 
     post {
         always {
-            archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
-            junit 'test-results.xml' // If you generate JUnit test reports
+            // Clean up after the build
+            cleanWs()
         }
         success {
-            echo 'Pipeline succeeded!'
+            echo 'Build and deployment succeeded!'
         }
         failure {
-            echo 'Pipeline failed!'
+            echo 'Build or deployment failed.'
         }
     }
 }
+
