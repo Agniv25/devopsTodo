@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    
-    tools {
-        nodejs "node"
-    }
 
     environment {
         NODEJS_HOME = tool name: 'node', type: 'NodeJSInstallation'
@@ -33,17 +29,20 @@ pipeline {
         }
         stage('Deploy') {
             steps {
+                // Example deployment step (could be to a server, S3, etc.)
+                // sh 'scp -r build/* user@your-server:/path/to/deploy'
                 echo 'Deploying application...'
             }
         }
     }
-    
+    tools {
+    nodejs "node"
+}
+
     post {
         always {
-            node {
-                archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
-                junit 'test-results.xml' // If you generate JUnit test reports
-            }
+            archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
+            junit 'test-results.xml' // If you generate JUnit test reports
         }
         success {
             echo 'Pipeline succeeded!'
