@@ -14,7 +14,7 @@ node {
     }
 
     // Uncomment and modify the Deploy stage if needed
-    // stage('Deploy') {
-    //     bat 'npm run dev'
-    // }
+     stage('Deploy') {
+         bat 'npm run dev'
+     }
 }
